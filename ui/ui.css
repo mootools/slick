@@ -1,83 +1,215 @@
 html,body{
-	color: #00a;
+	background: #000 url(bg0.png) fixed center;
+}
+
+html {
+	margin:0;padding:0;
+}
+body {
+	font-size: 10px;
+	margin:0;padding:0;
+}
+
+.page {
+	background: #fff url(bg.png) center;
+	width: 76.8em;
+	height: 94.6em;
 	text-align:center;
-	background: #5ff url(bg.png) center;
-/*	font-family: "American Typewriter", "Courier New", Courier, monospace;*/
-	font-family: Georgia, serif;
-	font-size: 15px;
-	line-height: 1.5;
-}
-
-a:link{
-	color:#00A;
-}
-a:visited {
-	color:#A0A;
-}
-a:link:hover, 
-a:visited:hover {
-	color: #ff5;
-	background-color: #A50;
-}
-a:link:active ,
-a:visited:active {
-	color:#A00;
-}
-
-a:link, 
-a:visited {
-	background-color: #ff5;
-	text-decoration: none;
-	display: inline-block;
-	padding: 0 0.5ex;
-	margin: 0 -0.5ex;
-/*	border-bottom: 1px solid;*/
-	-webkit-border-radius: .5ex;
-}
-
-
-.block {
-	width: 40ex;
 	margin: 0 auto;
-	text-align:left;
-	background-color: #5FF;
-	padding: 1ex 2em;
-	-webkit-border-radius: 1ex;
+	position:relative;
+	overflow:hidden;
 }
 
-pre code {
-	background-color: #00a;
-	color: #AAA;
+.page .body {
+	left: 76.8px;
+	right: 76.8px;
+	top:102px;
+	bottom:102px;
+	position:absolute;
+	/*background-color: #5ff;*/
+}
+
+
+.M{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.T {
+	position: absolute;
+	top:0;
+	left:0;
+	width:100%;
+}
+.B {
+	position: absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+}
+
+
+.r{
+	left: auto;
+	right: 0;
+	text-align:right;
+}
+
+.l {
+	text-align: left;
+}
+
+.l,.r{
+	width:50%;
+}
+
+/* @group #menu */
+
+#menu a:link,
+#menu a:visited{
+	text-decoration:none;
+	color: #000;
+	z-index: 1;
+	position:relative;
+}
+#menu a:link:focus,
+#menu a:link:hover,
+#menu a:visited:focus,
+#menu a:visited:hover{
+	background: #000;
+	color: #fff;
+}
+#menu a:link:active,
+#menu a:visited:active{
+	background: #5ff;
+	color: #fff;
+}
+
+#menu h1 object,
+#menu h1 embed,
+#menu h1 img{
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: 322px;
+	height: 322px;
+	margin-left: -161px;
+	margin-top:-77px;
+}
+#menu h1 .img{
+	text-indent:-999em;
+	overflow:hidden;
 	display:block;
-	padding: 1ex 1em;
-	border-left: .5ex solid #55F;
-	
-	padding-left: 3ex;
-	text-indent: -2ex;
-}
-.block dd {
-	font-size: 86.6666%;
+	height:100%;
+	width:100%;
+	background-image: url('../slickjs-logo@322.png');
 }
 
-dd {
-	margin:0;padding:0;
+/* @group T */
+
+#menu .T {
+	top: 32%;
+	font-size: 4.4em;
+	font-weight:normal;
+	margin: 0;
+}
+#menu h2 em,
+#menu a em,
+#menu h2 b,
+#menu a b{
+	font-weight:normal;
+	font-family: "Lobster", sans-serif;
+	text-rendering: optimizeLegibility;
 }
 
-h3 em {
+#menu .T em {
+	font-size: .47727272727272727272em;
+	margin-right: -.2em;
 	font-weight: normal;
+	font-style: normal;
 }
 
-code {
-	font-family: "Luxi Mono", monaco, monospace;
-	font-size: 13px;
-	line-height: 16px;
+#menu .T.m {
+	font-size: 6em;
+	display: inline-block !important;
+	width: auto;
+	left: 50%;
+	margin-left: -4.8ex;
 }
 
-pre {
-	margin:0;padding:0;
-	text-align:left;
-	white-space: pre-wrap;
-	margin: 1ex 0;
+#menu .T.m a {
+	display: block;
+	padding: .6ex 1ex 1ex;
 }
 
+#menu h2.T.m em {
+	display: block;
+	font-size: .2em;
+	text-align: left;
+	margin-top: -1.1em;
+}
 
+/* @end */
+
+/* @group M */
+
+#menu .M {
+	top: 45%;
+	font-size: 3.6em;
+	font-family: "IM Fell English SC", serif;
+	text-rendering: optimizeLegibility;
+}
+
+#menu .M a {
+	display: inline-block;
+	padding: .5ex .5em;
+	margin: 0 -.5em;
+	line-height: 1;
+}
+
+#menu .M a em{
+	position: absolute;
+	display: block;
+	font-size: .4em;
+	text-align: left;
+	margin-top: -1ex;
+	font-family: "IM Fell English", serif;
+	text-rendering: optimizeLegibility;
+	font-style: italic;
+
+}
+
+#menu .M h3 {
+	margin: 0;
+	font-weight: normal;
+	font-size: 2em;
+}
+
+/* @end */
+
+/* @group B */
+
+#menu .B a {
+	display: inline-block;
+	width: 32.5%;
+	font: italic 1.8em "IM Fell English", serif;
+/*	text-rendering: optimizeLegibility;*/
+	padding: 1em 0 1ex;
+	margin-bottom:-1ex;
+}
+
+#menu .B h3 {
+	display: none;
+}
+
+#menu .B a img {
+	display: block;
+	margin: 0 auto;
+	margin-bottom: 1ex;
+	border: 2px solid;
+}
+
+/* @end */
+
+
+/* @end */
