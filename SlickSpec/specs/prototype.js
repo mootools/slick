@@ -105,7 +105,6 @@ var specsPrototype = function(context){
 
 		it('should SelectorWithTagNameAndSpecificAttributeValue', function(){
 			compareArrays($('link_1', 'link_2', 'link_3'), $$('a[href="#"]'));
-			compareArrays($('link_1', 'link_2', 'link_3'), $$('a[href=#]'));
 		});
 
 		it('should SelectorWithTagNameAndWhitespaceTokenizedAttributeValue', function(){
@@ -142,8 +141,7 @@ var specsPrototype = function(context){
 		it('should SelectorWithBracketAttributeValue', function(){
 			compareArrays($('chk_1', 'chk_2'), $$('#troubleForm2 input[name="brackets[5][]"]'));
 			compareArrays([$('chk_1')], $$('#troubleForm2 input[name="brackets[5][]"]:checked'));
-			compareArrays([$('chk_2')], $$('#troubleForm2 input[name="brackets[5][]"][value=2]'));
-			compareArrays([], $$('#troubleForm2 input[name=brackets[5][]]'));
+			compareArrays([$('chk_2')], $$('#troubleForm2 input[name="brackets[5][]"][value="2"]'));
 		});
 
 		it('should $$WithNestedAttributeSelectors', function(){
@@ -246,7 +244,6 @@ var specsPrototype = function(context){
 			compareArrays($('level2_1', 'level3_1'), $$('#level1 *[id$="_1"]'));
 			compareArrays($('level2_1', 'level3_1'), $$('#level1 *[id$=_1]'));
 			compareArrays($('level2_1', 'level3_2', 'level2_2', 'level2_3'), $$('#level1 *[id*="2"]'));
-			compareArrays($('level2_1', 'level3_2', 'level2_2', 'level2_3'), $$('#level1 *[id*=2]'));
 		});
 
 		it('should SelectorWithDuplicates', function(){
@@ -320,8 +317,10 @@ var specsPrototype = function(context){
 			compareArrays($$('ul > li:nth-child(odd)'), $$('ul > li:nth-child(2n+1)'));
 			compareArrays($$('ul > li:first-child'), $$('ul > li:nth-child(1)'));
 			compareArrays($$('ul > li:last-child'), $$('ul > li:nth-last-child(1)'));
-			// buggy in Opera
-			compareArrays($$('ul > li:nth-child(n-999)'), $$('ul > li'));
+			
+			// changed this value from n-999 to n-128 as Opera 10 imposes artifical limits
+			// http://operawiki.info/ArtificialLimits (jdalton)
+			compareArrays($$('ul > li:nth-child(n-128)'), $$('ul > li'));
 			compareArrays($$('ul>li'), $$('ul > li'));
 			compareArrays($$('#p a:not(a[rel$="nofollow"])>em'), $$('#p a:not(a[rel$="nofollow"]) > em'));
 		});
@@ -334,12 +333,15 @@ var specsPrototype = function(context){
 		});
 
 		it('should CommasFor$$', function(){
+			// ensure document ordered lists of matching elements (dp)
+			compareArrays($('p', 'link_1', 'list', 'item_1', 'item_3', 'troubleForm'), $$('#list, .first,*[xml:lang="es-us"] , #troubleForm'));
 			compareArrays($$('#list, #p, #link_1, #item_1, #item_3, #troubleForm'), $$('#list, .first,*[xml:lang="es-us"] , #troubleForm'));
 			compareArrays($$('#commaParent, #commaChild'), $$('form[title*="commas,"], input[value="#commaOne,#commaTwo"]'));
 		});
 
 		it('should $$CombinesResultsWhenMultipleExpressionsArePassed', function(){
-			compareArrays($$('#link_1, #link_2, #item_1, #item_2, #item_3'), $$('#p a', null, $$(' ul#list li ')));
+			// remove `null` and consolidate $$('#p a', null, $$(' ul#list li '); (jddalton)
+			compareArrays($$('#link_1, #link_2, #item_1, #item_2, #item_3'), $$('#p a, ul#list li '));
 		});
 		
 		it('should SelectorNotInsertedNodes', function(){

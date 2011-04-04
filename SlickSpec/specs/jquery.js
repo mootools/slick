@@ -275,8 +275,8 @@ var specsJQuery = function(context){
 		t( "Attribute Equals 4", "a[ rel = 'bookmark' ]", ["simon1"] );
 
 		document.getElementById("anchor2").href = "#2";
-		t( "href Attribute", "p a[href^=#]", ["anchor2"] );
-		t( "href Attribute 1", "p a[href*=#]", ["simon1", "anchor2"] );
+		t( "href Attribute", "p a[href^='#']", ["anchor2"] );
+		t( "href Attribute 1", "p a[href*='#']", ["simon1", "anchor2"] );
 
 		t( "for Attribute", "form label[for]", ["label-for"] );
 		t( "for Attribute in form", "#form [for=action]", ["label-for"] );
@@ -332,12 +332,13 @@ var specsJQuery = function(context){
 		t( "Disabled UI Element", "#form input:disabled", ["text2"] );
 		t( "Checked UI Element", "#form input:checked", ["radio2","check1"] );
 
-		t( "Selected Option Element", "#form option:selected", ["option1a","option2d","option3b","option3c"] );
-		t( "Text Contains", "a:contains('Google')", ["google","groups"] );
-		t( "Text Contains 1", "a:contains('Google Groups')", ["groups"] );
+		// Remove custom selectors (jddalton)
+		//t( "Selected Option Element", "#form option:selected", ["option1a","option2d","option3b","option3c"] );
+		//t( "Text Contains", "a:contains('Google')", ["google","groups"] );
+		//t( "Text Contains 1", "a:contains('Google Groups')", ["groups"] );
 
-		t( "Text Contains 2", "a:contains('Google Groups (Link)')", ["groups"] );
-		t( "Text Contains 3", "a:contains('(Link)')", ["groups"] );
+		//t( "Text Contains 2", "a:contains('Google Groups (Link)')", ["groups"] );
+		//t( "Text Contains 3", "a:contains('(Link)')", ["groups"] );
 
 		t( "Element Preceded By", "p ~ div", ["foo", "moretests","tabindex-tests", "liveHandlerOrder"] );
 		t( "Not", "a.blog:not(.link)", ["mark"] );
@@ -364,8 +365,8 @@ var specsJQuery = function(context){
 		//t( "nth Element", "p:nth(1)", ["ap"] );
 		//t( "First Element", "p:first", ["firstp"] );
 		//t( "Last Element", "p:last", ["first"] );
-		t( "Odd Elements", "p:odd", ["firstp","sndp","sap", "first"] );
-		t( "Even Elements", "p:even", ["ap","en"] );
+		//t( "Odd Elements", "p:odd", ["firstp","sndp","sap", "first"] );
+		//t( "Even Elements", "p:even", ["ap","en"] );
 		//t( "Position Equals", "p:eq(1)", ["ap"] );
 		//t( "Position Greater Than", "p:gt(0)", ["ap","sndp","en","sap","first"] );
 		//t( "Position Less Than", "p:lt(3)", ["firstp","ap","sndp"] );
