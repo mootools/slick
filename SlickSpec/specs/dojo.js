@@ -59,8 +59,13 @@ var specsDojo = function(context){
 
 			// classnames aren't case sensitive, only attribute selectors and xml tagnames, this spec is invalid
 			// "doh.is(1, dojo.query('.fooBar').length);",
-			"doh.is(1, dojo.query('[class~=foobar]').length);",
-			"doh.is(1, dojo.query('[class~=fooBar]').length);",
+
+			// Modified from `1` to `2` because class names of HTML elements in quirks mode
+			// must be treated as ASCII case-insensitive. (jddalton)
+			// https://developer.mozilla.org/en/Mozilla_Quirks_Mode_Behavior
+			// http://www.whatwg.org/specs/web-apps/current-work/#selectors
+			"doh.is(2, dojo.query('[class~=foobar]').length);",
+			"doh.is(2, dojo.query('[class~=fooBar]').length);",
 
 			// syntactic equivalents
 			"doh.is(12, (dojo.query('#t > *')).length);",
@@ -126,8 +131,10 @@ var specsDojo = function(context){
 
 
 			// failed scope arg
-			"doh.is(0, (dojo.query('*', 'thinger')).length);",
 			"doh.is(0, (dojo.query('div#foo').length));",
+
+			// Removed as this is specific to Dojo API (jddalton)
+			//"doh.is(0, (dojo.query('*', 'thinger')).length);",
 
 			// sibling selectors
 			"doh.is(1, dojo.query('+', 'container').length);",
@@ -167,8 +174,6 @@ var specsDojo = function(context){
 			"doh.is(2, dojo.query('#t2 > :checked').length);",
 			"doh.is(dojo.byId('checkbox2'), dojo.query('#t2 > input[type=checkbox]:checked')[0]);",
 			"doh.is(dojo.byId('radio2'), dojo.query('#t2 > input[type=radio]:checked')[0]);",
-			// this failure should be ignored for now, this behavior is strange
-			// and some browsers dont implement this on theyres QSA 
 			"doh.is(2, dojo.query('#t2select option:checked').length);",
 
 			// cross-document queries
