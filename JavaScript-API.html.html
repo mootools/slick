@@ -7,6 +7,7 @@
 	<link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin" rel=stylesheet>
 	<link href="http://fonts.googleapis.com/css?family=IM+Fell+English+SC&subset=latin" rel="stylesheet">
 	<link href="http://fonts.googleapis.com/css?family=IM+Fell+English:italic&subset=latin" rel="stylesheet">
+
 	<link rel=stylesheet href="ui/ui.css">
 	<meta name=viewport content="minimum-scale=0.25, maximum-scale=4, width=device-width">
 </head>
@@ -94,6 +95,31 @@ Slick.match(&glt;div class=lame&gt;, &lt;div class=rocks&gt;) → false</pre>
 		<pre>
 Slick.contains(&lt;ul&gt;, &lt;li&gt;) → true
 Slick.contains(&lt;body&gt;, &lt;html&gt;) → false</pre>
+
+		
+		<h4>Slick.definePseudo</h4>
+		
+		<p>Defines a new custom CSS Pseudo matcher</p>
+		
+		<p><b>Expects:</b></p>
+		<ul>
+			<li>string: the pseudo name</li>
+			<li>function: the matcher</li>
+		</ul>
+		
+		<pre>
+Slick.definePseudo('text', function(node, value){
+	return node.innerHTML == value;
+});
+</pre>
+
+
+		<h4>Slick.version</h4>
+
+		<p>Defines the current version of Slick</p>
+
+		<pre>alert(Slick.version);</pre>
+
 
 
 		<h3>Slick.Parser</h3>
