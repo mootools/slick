@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv=Content-type content="text/html; charset=utf-8">
+	<title>Slick.js - JavaScript API</title>
+
+	<link href="http://fonts.googleapis.com/css?family=Lobster&subset=latin" rel=stylesheet>
+	<link href="http://fonts.googleapis.com/css?family=IM+Fell+English+SC&subset=latin" rel="stylesheet">
+	<link href="http://fonts.googleapis.com/css?family=IM+Fell+English:italic&subset=latin" rel="stylesheet">
+	<link rel=stylesheet href="ui/ui.css">
+	<meta name=viewport content="minimum-scale=0.25, maximum-scale=4, width=device-width">
+</head>
+<body>
+
+
+<div class=page>
+
+	<header>
+		<h1>
+			<a href="index.html"><img src="slickjs-logo@322.png" alt="Slick"><i class=img>Slick.js</i></a>
+		</h1>
+	</header>
+
+	<section class="middle docs">
+		<h2>JavaScript API</h2>
+
+
+		<h3>Slick.Finder</h3>
+
+		<p>Slick Selector Engine</p>
+
+		<h4>Slick.search</h4>
+
+		<p>Search this context for any nodes that match this selector.</p>
+
+		<p><b>Expects:</b></p>
+		<ol>
+			<li>context: document or node or array of documents or nodes</li>
+			<li>selector: String or SelectorObject</li>
+			<li><em>(optional)</em> append: Array or Object with a push method</li>
+		</ol>
+		<p><b>Returns:</b> append argument or Array of 0 or more nodes</p>
+
+		<pre>
+Slick.search(document, "#foo > bar.baz") → [&lt;bar&gt;, &lt;bar&gt;, &lt;bar&gt;]
+Slick.search([&lt;ol&gt;, &lt;ul&gt;], "li > a") → [&lt;a&gt;, &lt;a&gt;, &lt;a&gt;]
+Slick.search(document, "#foo > bar.baz", { push:function(){} }) → { push:function(){}, 0:<bar>, 1:<bar>, 2:<bar> }</pre>
+
+		<h4>Slick.find</h4>
+
+		<p>Find the first node in document that matches selector or null if none are found.</p>
+
+		<p><b>Expects:</b></p>
+		<ol>
+			<li>context: document or node or array of documents or nodes</li>
+			<li>selector: String or SelectorObject</li>
+		</ol>
+		<p><b>Returns:</b> Element or null</p>
+
+		<pre>
+Slick.find(document, "#foo > bar.baz") → &lt;bar&gt;
+Slick.find(node, "#does-not-exist") → null</pre>
+
+
+		<h4>Slick.match</h4>
+
+		<p>Does this node match this selector?</p>
+
+		<p><b>Expects:</b></p>
+		<ol>
+			<li>node</li>
+			<li>node, String or SelectorObject</li>
+		</ol>
+		<p><b>Returns:</b> true or false</p>
+
+		<p><b>note:</b> The HTML in the following example represent DOM nodes</em>
+		<pre>
+Slick.match(&glt;div class=rocks&gt;, "div.rocks") → true
+Slick.match(&glt;div class=lame&gt;, "div.rocks") → false
+Slick.match(&glt;div class=lame&gt;, &lt;div class=rocks&gt;) → false</pre>
+
+		
+		<h4>Slick.contains</h4>
+
+		<p>Does this context contain this node? Is the context a parent of this node?</p>
+
+		<p><b>Expects:</b>
+		<ol>
+			<li>context: document or node</li>
+			<li>node: node</li>
+		</ol>
+		<p><b>Returns:</b> true or false</p>
+
+		<pre>
+Slick.contains(&lt;ul&gt;, &lt;li&gt;) → true
+Slick.contains(&lt;body&gt;, &lt;html&gt;) → false</pre>
+
+
+		<h3>Slick.Parser</h3>
+
+		<p>Parse a CSS selector string into a JavaScript object</p>
+
+		<h4>Usage</h4>
+
+		<p><code>parse</code> selector into object</p>
+		<p>Parse a CSS Selector String into a Selector Object.</p>
+		<p><b>Expects:</b> String</p>
+		<p><b>Returns:</b> SelectorObject</p>
+		<pre>Slick.parse("#foo > bar.baz") → SelectorObject</pre>
+
+		<h4>SelectorObject format</h4>
+
+		<code>#foo > bar.baz</code>
+
+		<pre>
+{
+    "raw":"#foo > bar.baz",
+    "expressions": [[
+        { "combinator":" ", "tag":"*", "id":"foo" },
+        { "combinator":">", "tag":"bar", "classList": ["baz"], "classes": [{"value":"baz", "regexp":RegExp }]}
+    ]]
+}</pre>
+
+		<code>h1, h2, ul > li, .things</code>
+
+		<pre>
+{
+    "raw": "h1, h2, ul > li, .things",
+    "expressions": [
+        [{ "combinator":" ", "tag": "h1" }],
+        [{ "combinator":" ", "tag": "h2" }],
+        [{ "combinator":" ", "tag": "ul" }, { "combinator": ">", "tag": "li" }],
+        [{ "combinator":" ", "tag": "*", "classList": ["things"], "classes": [{"value": "things", "regexp":RegExp }] }]
+    ]
+}</pre>
+
+	</section>
+
+</div>
+
+</body>
+</html>
