@@ -319,21 +319,30 @@ local.pushUID = function(node, tag, id, selector, classes, attributes, pseudos){
 	}
 };
 
-local.matchNode = function(node, selector){
-	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector));
+var reSingularCombinator = /^\!?[>+^]$/; // "+", ">", "^"
+local.matchNode = function(node, selector, needle){
+	if (!needle && this.isHTMLDocument && this.nativeMatchesSelector){
+		try {
+			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
+		} catch(matchError) {}
+	}
+	var parsed = this.Slick.parse(selector);
 	if (!parsed) return true;
-	
-	// simple (single) selectors
-	if(parsed.length == 1 && parsed.expressions[0].length == 1){
-		var exp = parsed.expressions[0][0];
-		return this.matchSelector(node, (this.isXMLDocument) ? exp.tag : exp.tag.toUpperCase(), exp.id, exp.parts);
-	}
 
-	var nodes = this.search(this.document, parsed);
-	for (var i=0, item; item = nodes[i++];){
-		if (item === node) return true;
+	parsed = parsed.reverse();
+	for (var i = 0, expression, expressions, built, length, multiple; expression = parsed.expressions[i]; i++) {
+		var first = expression[0];
+		if (local.matchSelector(node, (this.isXMLDocument) ? first.tag : first.tag.toUpperCase(), first.id, first.classes, first.attributes, first.pseudos)) { // matching first selector against element
+			if ((length = expression.length) == 1) continue;
+			if (!built) built = {Slick: true, expressions: [], length: 0};
+			built.expressions.push(expressions	= []);
+			built.length++;
+			for (var j = 1; j < length; j++) expressions.push(expression[j]);
+			if (!multiple) multiple = !expression[expression.length - 1].combinator.match(reSingularCombinator);
+		} else return false;
 	}
-	return false;
+	var found = built ? this.search(node, built, null, !(multiple && needle)) : node;
+	return needle ? (multiple ? found.indexOf(needle) > -1 : found == needle) : !!found;
 };
 
 local.matchPseudo = function(node, name, argument){
