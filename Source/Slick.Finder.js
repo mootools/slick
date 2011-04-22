@@ -558,7 +558,7 @@ local.matchNode = function(node, selector, needle){
 			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
 		} catch(matchError) {}
 	}
-	var parsed = this.Slick.parse(selector);
+	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector));
 	if (!parsed) return true;
 	parsed = parsed.reverse();
 	for (var i = 0, expression, expressions, built, length, multiple; expression = parsed.expressions[i]; i++) {
