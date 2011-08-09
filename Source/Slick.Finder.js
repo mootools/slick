@@ -551,33 +551,29 @@ local.pushUID = function(node, tag, id, classes, attributes, pseudos){
 	}
 };
 
-local.matchNode = function(node, selector){
-	if (this.isHTMLDocument && this.nativeMatchesSelector){
+var reSingularCombinator = /^\!?[>+^]$/; // "+", ">", "^"
+local.matchNode = function(node, selector, needle){
+	if (!needle && this.isHTMLDocument && this.nativeMatchesSelector){
 		try {
 			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
 		} catch(matchError) {}
 	}
-	
-	var parsed = this.Slick.parse(selector);
+	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector));
 	if (!parsed) return true;
-
-	// simple (single) selectors
-	var expressions = parsed.expressions, reversedExpressions, simpleExpCounter = 0, i;
-	for (i = 0; (currentExpression = expressions[i]); i++){
-		if (currentExpression.length == 1){
-			var exp = currentExpression[0];
-			if (this.matchSelector(node, (this.isXMLDocument) ? exp.tag : exp.tag.toUpperCase(), exp.id, exp.classes, exp.attributes, exp.pseudos)) return true;
-			simpleExpCounter++;
-		}
+	parsed = parsed.reverse();
+	for (var i = 0, expression, expressions, built, length, multiple; expression = parsed.expressions[i]; i++) {
+		var first = expression[0];
+		if (local.matchSelector(node, (this.isXMLDocument) ? first.tag : first.tag.toUpperCase(), first.id, first.classes, first.attributes, first.pseudos)) { // matching first selector against element
+			if ((length = expression.length) == 1) continue;
+			if (!built) built = {Slick: true, expressions: [], length: 0};
+			built.expressions.push(expressions	= []);
+			built.length++;
+			for (var j = 1; j < length; j++) expressions.push(expression[j]);
+			if (!multiple) multiple = !expression[expression.length - 1].combinator.match(reSingularCombinator);
+		} else return false;
 	}
-
-	if (simpleExpCounter == parsed.length) return false;
-
-	var nodes = this.search(this.document, parsed), item;
-	for (i = 0; item = nodes[i++];){
-		if (item === node) return true;
-	}
-	return false;
+	var found = built ? this.search(node, built, null, !(multiple && needle)) : node;
+	return needle ? (multiple ? found.indexOf(needle) > -1 : found == needle) : !!found;
 };
 
 local.matchPseudo = function(node, name, argument){
