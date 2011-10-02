@@ -68,7 +68,7 @@ var escapeRegExp = function(string){// Credit: XRegExp 0.6.1 (c) 2007-2008 Steve
 	});
 };
 
-var regexp = new RegExp(
+var regexp = RegExp(
 /*
 #!/usr/bin/env ruby
 puts "\t\t" + DATA.read.gsub(/\(\?x\)|\s+#.*$|\s+|\\$|\\n/,'')
