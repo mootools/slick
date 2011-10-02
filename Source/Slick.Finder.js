@@ -980,4 +980,15 @@ Slick.uidOf = function(node){
 
 if (!this.Slick) this.Slick = Slick;
 
+// AMD
+
+if (typeof define == 'function' && define.amd){
+	define(['./Slick.Parser'], function(parse){
+		Slick.parse = parse;
+		return Slick;
+	});
+	return;
+}
+
+
 }).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);

@@ -215,6 +215,13 @@ function parser(
 	return '';
 };
 
+// AMD
+
+if (typeof define == 'function' && define.amd){
+	define(function(){return parse});
+	return;
+}
+
 // exports
 
 var Slick = (this.Slick || {});
