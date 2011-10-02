@@ -62,11 +62,11 @@ var reverse = function(expression){
 	return expression;
 };
 
-var escapeRegExp = function(string){// Credit: XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
-	return string.replace(/[-[\]{}()*+?.\\^$|,#\s]/g, function(match){
-		return '\\' + match;
-	});
-};
+var escapeRegExp = (function(){
+	// Credit: XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
+	var from = /(?=[\-\[\]{}()*+?.\\\^$|,#\s])/g, to = '\\';
+	return function(string){ return string.replace(from, to) }
+}())
 
 var regexp = new RegExp(
 /*
