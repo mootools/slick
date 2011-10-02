@@ -987,7 +987,6 @@ if (typeof define == 'function' && define.amd){
 		Slick.parse = parse;
 		return Slick;
 	});
-	return;
 }
 
 
