@@ -215,7 +215,7 @@ function parser(
 	return '';
 };
 
-// Slick NS
+// exports
 
 var Slick = (this.Slick || {});
 
@@ -227,4 +227,4 @@ Slick.escapeRegExp = escapeRegExp;
 
 if (!this.Slick) this.Slick = Slick;
 
-}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);
+}).apply(/*<CommonJS>*/(typeof exports == 'object') ? exports : /*</CommonJS>*/this);
