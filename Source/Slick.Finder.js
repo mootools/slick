@@ -787,7 +787,7 @@ var pseudos = {
 	'nth-last-of-type': local.createNTHPseudo('lastChild', 'previousSibling', 'posNTHTypeLast', true),
 
 	'index': function(node, index){
-		return this['pseudo:nth-child'](node, '' + index + 1);
+		return this['pseudo:nth-child'](node, '' + (index + 1));
 	},
 
 	'even': function(node){
