@@ -601,7 +601,7 @@ local.matchSelector = function(node, tag, id, classes, attributes, pseudos){
 
 	var i, part, cls;
 	if (classes) for (i = classes.length; i--;){
-		cls = node.getAttribute('class') || node.className;
+		cls = this.getAttribute(node, 'class');
 		if (!(cls && classes[i].regexp.test(cls))) return false;
 	}
 	if (attributes) for (i = attributes.length; i--;){
@@ -858,10 +858,6 @@ for (var p in pseudos) local['pseudo:' + p] = pseudos[p];
 // attributes methods
 
 var attributeGetters = local.attributeGetters = {
-
-	'class': function(){
-		return this.getAttribute('class') || this.className;
-	},
 
 	'for': function(){
 		return ('htmlFor' in this) ? this.htmlFor : this.getAttribute('for');
