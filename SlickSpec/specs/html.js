@@ -52,6 +52,20 @@ describe('Slick', function(){
 
 	});
 
+	describe('Contains', function(){
+
+		it('should check contains for document', function(){
+			expect(context.CONTAINS(document, document)).toEqual(true);
+		});
+		it('should check contains for document', function(){
+			expect(context.CONTAINS(document, document.documentElement)).toEqual(true);
+		});
+		it('should check contains for document', function(){
+			var el = document.createElement('div')
+			expect(context.CONTAINS(document, el)).toEqual(false);
+		});
+
+	});
 
 });
 
