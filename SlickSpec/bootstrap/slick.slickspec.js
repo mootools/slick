@@ -16,7 +16,10 @@ var setupMethods = function(window){
 	window.PARSE = function(selector){
 		return Slick.parse(selector);
 	};
-	
+	window.CONTAINS = function(context, node){
+		return Slick.contains(context, node);
+	};
+
 	window.SELECTOR = Slick;
 };
 
@@ -48,6 +51,12 @@ var verifySetupMethods = function(window){
 			expect( window.PARSE('*').expressions.length ).toEqual(1);
 			expect( window.PARSE('*').expressions[0].length ).toEqual(1);
 		});
+
+		it('should define CONTAINS', function(){
+			expect( typeof window.CONTAINS ).toEqual('function');
+			expect( typeof window.CONTAINS(window.document, window.document.body) ).toEqual('boolean');
+		});
+
 	});
 };
 
