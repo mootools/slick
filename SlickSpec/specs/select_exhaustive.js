@@ -29,20 +29,25 @@ function specsSelectorExhaustiveOnTag(context, tag, ns){
 			testNodeOrphaned = null;
 		});
 		
-		var it_should_select_classes = function(CLASSES){
+		var it_should_select_classes = function(CLASSES, usingAttributeSyntax){
 			
 			var testName = 'Should select element with class "'+ CLASSES.join(' ') +'"';
 			var className = CLASSES.join(' ');
 			if (className.indexOf('\\')+1) className += ' ' + CLASSES.join(' ').replace('\\','');
-			
+			var selector = '.' + CLASSES.join('.');
+			if (usingAttributeSyntax){
+				selector = '[class*=' + CLASSES.join('][class*=') + ']';
+				testName += ' using the attribute syntax';
+			}
+						
 			it(testName + ' from the document root', function(){
 				var tmpNode;
-				tmpNode = createElement();tmpNode.setAttribute('class',className);tmpNode.setAttribute('className',className);testNode.appendChild(tmpNode);
 				tmpNode = createElement();testNode.appendChild(tmpNode);
+				tmpNode = createElement();tmpNode.setAttribute('class',className);tmpNode.setAttribute('className',className);testNode.appendChild(tmpNode);
 				tmpNode = createElement();testNode.appendChild(tmpNode);
 				
 				expect(context.SELECT || global.context.SELECT).toBeDefined();
-				var result = (context.SELECT || global.context.SELECT)(testNode.ownerDocument, '.' + CLASSES.join('.'));
+				var result = (context.SELECT || global.context.SELECT)(testNode.ownerDocument, selector);
 				expect( result.length ).toEqual( 1 );
 				expect( (typeof result[0].className == 'string') ? result[0].className : result[0].getAttribute('class') ).toMatch( CLASSES.join(' ') );
 			});
@@ -54,7 +59,7 @@ function specsSelectorExhaustiveOnTag(context, tag, ns){
 				tmpNode = createElement();testNode.appendChild(tmpNode);
 				
 				expect(context.SELECT || global.context.SELECT).toBeDefined();
-				var result = (context.SELECT || global.context.SELECT)(testNode, '.' + CLASSES.join('.'));
+				var result = (context.SELECT || global.context.SELECT)(testNode, selector);
 				expect( result.length ).toEqual( 1 );
 				expect( (typeof result[0].className == 'string') ? result[0].className : result[0].getAttribute('class') ).toMatch( CLASSES.join(' ') );
 			});
@@ -66,18 +71,22 @@ function specsSelectorExhaustiveOnTag(context, tag, ns){
 				tmpNode = createElement();testNodeOrphaned.appendChild(tmpNode);
 				
 				expect(context.SELECT || global.context.SELECT).toBeDefined();
-				var result = (context.SELECT || global.context.SELECT)(testNodeOrphaned, '.' + CLASSES.join('.'));
+				var result = (context.SELECT || global.context.SELECT)(testNodeOrphaned, selector);
 				expect( result.length ).toEqual( 1 );
 				expect( (typeof result[0].className == 'string') ? result[0].className : result[0].getAttribute('class') ).toMatch( CLASSES.join(' ') );
 			});
 			
 			// it should match this class as a second class
-			if (CLASSES.length == 1) it_should_select_classes(['foo',CLASSES[0]]);
+			if (CLASSES.length == 1) it_should_select_classes(['foo',CLASSES[0]], usingAttributeSyntax);
 		};
 		
-		it_should_select_classes(CLASSES);
+		it_should_select_classes(CLASSES, false);
 		
-		for (var i=0; i < CLASSES.length; i++) it_should_select_classes([CLASSES[i]]);
+		for (var i=0; i < CLASSES.length; i++) it_should_select_classes([CLASSES[i]], false);
+
+		it_should_select_classes(CLASSES, true);
+		
+		for (var i=0; i < CLASSES.length; i++) it_should_select_classes([CLASSES[i]], true);
 		
 	});
 	
