@@ -1,14 +1,16 @@
 var specsSlickAPI = function(context){
 	
+	var SELECT = function(selector, append) {
+		return context.SELECT(context.document, selector, append);
+	};
+
 	describe('Select Inputs', function(){
-		
-		var SELECT = (context.SELECT || global.SELECT);
 		
 		describe('append', function(){
 			
 			it('should append results to an existing array if passed in', function(){
 				var append = [];
-				expect( SELECT(context.document, '*', append) === append ).toEqual(true);
+				expect( SELECT('*', append) === append ).toEqual(true);
 			});
 			
 			it('should append results to an existing array-like-thing if passed in',  function(){
@@ -18,31 +20,29 @@ var specsSlickAPI = function(context){
 						this[this.length++] = item;
 					}
 				};
-				expect( SELECT(context.document, '*', append) ).toEqual( append );
+				expect( SELECT('*', append) ).toEqual( append );
 			});
 			
 			if (document.querySelectorAll)
 			it('should not fail when using QSA is enabled', function(){
 				context.Slick && (context.Slick.disableQSA = false);
-				expect( typeof SELECT(context.document, '*').length ).toEqual('number');
-				expect( SELECT(context.document, '*').length ).not.toEqual(0);
+				expect( typeof SELECT('*').length ).toEqual('number');
+				expect( SELECT('*').length ).not.toEqual(0);
 			});
 			
 		});
 		
 		describe('context', function(){
-			var SELECT = (context.SELECT || global.SELECT);
-			
 			it('must accept a document', function(){
-				expect( SELECT(context.document, '*', []) ).not.toEqual( [] );
+				expect( SELECT('*', []) ).not.toEqual( [] );
 			});
 			
 			it('must accept a node', function(){
-				expect( SELECT(context.document.documentElement, '*', []).length ).not.toEqual( 0 );
+				expect( context.SELECT(context.document.documentElement, '*', []).length ).not.toEqual( 0 );
 			});
 			
 			it('must accept any node',  function(){
-				expect( SELECT(context.document.documentElement, '*', []).length ).not.toEqual( 0 );
+				expect( context.SELECT(context.document.documentElement, '*', []).length ).not.toEqual( 0 );
 				var timedLog;
 				var elements = context.document.getElementsByTagName('*');
 				for (var i=0, l=elements.length; i < l; i++) {
@@ -54,28 +54,63 @@ var specsSlickAPI = function(context){
 					}, 100);
 					
 					if (elements[i].getElementsByTagName('*').length)
-						expect( SELECT(elements[i], '*', []).length ).not.toEqual( 0 );
+						expect( context.SELECT(elements[i], '*', []).length ).not.toEqual( 0 );
 					else
-						expect( SELECT(elements[i], '*', []).length ).toEqual( 0 );
+						expect( context.SELECT(elements[i], '*', []).length ).toEqual( 0 );
 					
 					clearTimeout(timedLog);
 				}
 			});
 			
 			it('must accept a window', function(){
-				expect( SELECT(global.window, '*', []).length ).not.toEqual( 0 );
+				expect( context.SELECT(global.window, '*', []).length ).not.toEqual( 0 );
 				if (context.window && !context.window.fake)
-					expect( SELECT(context.window, '*', []).length ).not.toEqual( 0 );
+					expect( context.SELECT(context.window, '*', []).length ).not.toEqual( 0 );
 			});
 			
-			it('must reject null', function(){ expect( SELECT(null, '*', []).length ).toEqual( 0 ); });
-			it('must reject Number', function(){ expect( SELECT(1234567891011, '*', []).length ).toEqual( 0 ); });
-			it('must reject Array ', function(){ expect( SELECT([1,2,3,4,5,6], '*', []).length ).toEqual( 0 ); });
-			it('must reject String', function(){ expect( SELECT("string here", '*', []).length ).toEqual( 0 ); });
-			it('must reject Object',  function(){ expect( SELECT({ foo:'bar' }, '*', []).length ).toEqual( 0 ); });
-			
+			it('must reject null', function(){ expect( context.SELECT(null, '*', []).length ).toEqual( 0 ); });
+			it('must reject Number', function(){ expect( context.SELECT(1234567891011, '*', []).length ).toEqual( 0 ); });
+			it('must reject Array ', function(){ expect( context.SELECT([1,2,3,4,5,6], '*', []).length ).toEqual( 0 ); });
+			it('must reject String', function(){ expect( context.SELECT("string here", '*', []).length ).toEqual( 0 ); });
+			it('must reject Object',  function(){ expect( context.SELECT({ foo:'bar' }, '*', []).length ).toEqual( 0 ); });
 		});
 		
+	});
+
+	describe('definePseudo', function() {
+
+		describe('simple pseudo', function() {
+			beforeEach(function() {
+				context.DEFINE_PSEUDO('_select-span', function() {
+					return this.nodeName.toLowerCase() === 'span';
+				});
+			});
+
+			it('should be able to define a custom pseudo-class', function() {
+				expect(SELECT(':_select-span').length).toEqual(SELECT('span').length);
+			});
+		});
+
+		describe('pseudo that uses the selection engine inside it', function() {
+			beforeEach(function() {
+				context.DEFINE_PSEUDO('_has-elements', function(selector) {
+					return !!context.SELECT1(this, selector);
+				});
+			});
+
+			it('should be able to define a pseudo-class that uses the selection engine at its implementation', function() {
+				var h2 = SELECT('div'),
+					len = 0;
+
+				for (var i = h2.length; i--;) {
+					if (context.SELECT1(h2[i], 'input')) {
+						len++;
+					}
+				}
+
+				expect(SELECT('div:_has-elements(input)').length).toEqual(len);
+			});
+		});
 	});
 	
 	/*

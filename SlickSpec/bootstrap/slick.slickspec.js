@@ -19,6 +19,9 @@ var setupMethods = function(window){
 	window.CONTAINS = function(context, node){
 		return Slick.contains(context, node);
 	};
+	window.DEFINE_PSEUDO = function(name, fn){
+		return Slick.definePseudo(name, fn);
+	};
 
 	window.SELECTOR = Slick;
 };
@@ -51,12 +54,13 @@ var verifySetupMethods = function(window){
 			expect( window.PARSE('*').expressions.length ).toEqual(1);
 			expect( window.PARSE('*').expressions[0].length ).toEqual(1);
 		});
-
 		it('should define CONTAINS', function(){
 			expect( typeof window.CONTAINS ).toEqual('function');
 			expect( typeof window.CONTAINS(window.document, window.document.body) ).toEqual('boolean');
 		});
-
+		it('should define DEFINE_PSEUDO', function(){
+			expect( typeof window.DEFINE_PSEUDO ).toEqual('function');
+		});
 	});
 };
 

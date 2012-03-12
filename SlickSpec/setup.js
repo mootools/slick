@@ -6,9 +6,9 @@ var runnerOnLoad = global.onload;
 global.onload = function(){
 
 	// Unit tests
-	
+
 	if (unitTests) unitTests();
-	
+
 	// Mock creation
 
 	Mock.CreateTemplate('Generic HTML4 (transitional)',			'../mocks/template-transitional.html');
@@ -21,7 +21,7 @@ global.onload = function(){
 		Mock.CreateTemplate('Generic XML',						'../mocks/template.xml');
 		Mock.CreateTemplate('SVG',								'../mocks/MooTools_Logo.svg');
 	}
-	
+
 	if (Browser.ie){
 		Mock.CreateTemplate('Generic HTML4 (chromeframe)',		'../mocks/template-chromeframe.html');
 		if (Browser.version >= 8){
@@ -36,26 +36,31 @@ global.onload = function(){
 	Mock.CreateTemplate('YUI',									'../mocks/query_test-yui.html');
 	Mock.CreateTemplate('Slick',								'../mocks/query_test-slick.html');
 	Mock.CreateTemplate('HTML5 shim',							'../mocks/html5-shim.html');
-	
-	
+
+
 	new Mock.Request('XML responseXML',							'../mocks/xml.xml');
 	new Mock.Request('SVG responseXML',							'../mocks/MooTools_Logo.svg');
 
 	// Setup
-	
-	setupMethods(this); new Mock('', setupMethods);
-	verifySetupMethods(this); new Mock('', verifySetupMethods);
-	if (verifySetupContext) new Mock('', verifySetupContext);
-	if (specsSlickAPI) specsSlickAPI(this);
-	
+
+	setupMethods(this);
+	new Mock('', setupMethods);
+
+	verifySetupMethods(this);
+
+	verifySetupContext(this);
+	new Mock('', verifySetupContext);
+
+	specsSlickAPI(this);
+
 	// Parser specs
-	
+
 	specsParser(this);
-	
+
 	// Match specs
-	
+
 	specsMatch(this);
-	
+
 	// Specific Mocks
 
 	new Mock('Closure', specsGoogleClosure);
@@ -71,21 +76,21 @@ global.onload = function(){
 
 	new Mock(/\b(xml|svg|xhtml|html4)\b/i, specsSelectorEngineBugs);
 	new Mock(/\b(xml|svg|xhtml|html4)\b/i, specsBrowserBugsFixed);
-	
+
 	// Selector Tests
-	
+
 	new Mock(/\b(xml|svg|xhtml|html4)\b/i, specsSelectorExhaustive);
 	new Mock(/\b(xml|svg|xhtml|html4)\b/i, specsSelectNthChild);
-	
+
 	// XML
-	
+
 	new Mock(/\b(xml|svg|xhtml)\b/i, specsIsXML);
 	new Mock(/\b(html)\b/i, specsIsNotXML);
-	
+
 	// HTML5
-	
+
 	new Mock(/\b(html5)\b/i, specsHTML5);
-	
+
 };
 
 global.runnerOnLoad = runnerOnLoad;

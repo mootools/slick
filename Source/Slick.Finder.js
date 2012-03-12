@@ -416,9 +416,9 @@ local.search = function(context, expression, append, first){
 
 	// default engine
 
-	var j, m, n;
-	var combinator, tag, id, classList, classes, attributes, pseudos;
-	var currentItems, currentExpression, currentBit, lastBit, expressions = parsed.expressions;
+	var j, m, n,
+		combinator, tag, id, classList, classes, attributes, pseudos,
+		currentItems, currentExpression, currentBit, lastBit, expressions = parsed.expressions;
 
 	search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
 
@@ -588,7 +588,14 @@ local.matchNode = function(node, selector){
 
 local.matchPseudo = function(node, name, argument){
 	var pseudoName = 'pseudo:' + name;
-	if (this[pseudoName]) return this[pseudoName](node, argument);
+	if (this[pseudoName]) {
+		// saves a this.found reference so if the pseudo-selector
+		// uses Slick it wont mess with the current reference
+		var found = this.found,
+			result = this[pseudoName](node, argument);
+		this.found = found;
+		return result;
+	}
 	var attribute = this.getAttribute(node, name);
 	return (argument) ? argument == attribute : !!attribute;
 };
