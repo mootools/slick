@@ -1,30 +1,31 @@
 var specsSelectNthChild = function(context){
 	
-	describe('nth-child', function(){
+	var document = context.document;
+	var parent = document.createElement('div');
 
-		var document = context.document;
-		var parent = document.createElement('div');
-		
-		for (var i = 1, el; i <= 10; i++){
-			el = document.createElement('div');
-			el.appendChild(document.createTextNode(i));
-			parent.appendChild(el);
-		};
-		
-		var shouldSelect = function(selector, items){
-			var result = context.SELECT(parent, selector);
-			expect(result.length).toEqual(items.length);
-			for (var i = 0; i < result.length; i++){
-				expect(result[i].firstChild.nodeValue).toEqual('' + items[i]);
-			}
-		};
-		
+	for (var i = 1, el; i <= 10; i++){
+		el = document.createElement('div');
+		el.appendChild(document.createTextNode(i));
+		parent.appendChild(el);
+	};
+
+	var shouldSelect = function(selector, items){
+		var result = context.SELECT(parent, selector);
+		console.log(selector, result);
+		expect(result.length).toEqual(items.length);
+		for (var i = 0; i < result.length; i++){
+			expect(result[i].firstChild.nodeValue).toEqual('' + items[i]);
+		}
+	};
+
+	describe('nth-child', function(){
 		it('should match by index', function(){
 			shouldSelect(':nth-child(0)', []);
 			shouldSelect(':nth-child(1)', [1]);
 			shouldSelect(':nth-child(10)', [10]);
 			shouldSelect(':nth-child(11)', []);
 		});
+
 		if (!global.disableNegNth)
 		it('should match by index with negative', function(){
 			shouldSelect(':nth-child(-1)', []);
@@ -59,6 +60,14 @@ var specsSelectNthChild = function(context){
 		});
 		it('should work with both nth-child and nth-last-child', function(){
 			shouldSelect(':nth-child(odd):nth-last-child(odd)', []);
+		});
+	});
+
+	describe('index', function() {
+		it('should select child elements by index, starting at 0', function() {
+			shouldSelect(':index(0)', [1]);
+			shouldSelect(':index(1)', [2]);
+			shouldSelect(':index(10)', []);
 		});
 	});
 };
