@@ -300,7 +300,7 @@ local.search = function(context, expression, append, first){
 				if (!this.isHTMLDocument || !contextIsDocument) break simpleSelectors;
 				node = context.getElementById(name);
 				if (!node) return found;
-				if (this.idGetsName && node.getAttributeNode('id').nodeValue != name) break simpleSelectors;
+				if (this.idGetsName && this.getAttribute(node, 'id') != name) break simpleSelectors;
 				if (first) return node || null;
 				if (!(hasOthers && uniques[this.getUID(node)])) found.push(node);
 
@@ -637,15 +637,14 @@ var combinators = {
 		if (this.isHTMLDocument){
 			getById: if (id){
 				item = this.document.getElementById(id);
-				if ((!item && node.all) || (this.idGetsName && item && item.getAttributeNode('id').nodeValue != id)){
+				if ((!item && node.all) || (this.idGetsName && item && this.getAttribute(item, 'id') != id)){
 					// all[id] returns all the elements with that name or id inside node
 					// if theres just one it will return the element, else it will be a collection
 					children = node.all[id];
 					if (!children) return;
 					if (!children[0]) children = [children];
 					for (i = 0; item = children[i++];){
-						var idNode = item.getAttributeNode('id');
-						if (idNode && idNode.nodeValue == id){
+						if (this.getAttribute(item, 'id') == id){
 							this.push(item, tag, null, classes, attributes, pseudos);
 							break;
 						}
@@ -884,13 +883,13 @@ var attributeGetters = local.attributeGetters = {
 		return (this.style) ? this.style.cssText : this.getAttribute('style');
 	},
 
+	'type': function(){
+		return this.getAttribute('type');
+	},
+
 	'tabindex': function(){
 		var attributeNode = this.getAttributeNode('tabindex');
 		return (attributeNode && attributeNode.specified) ? attributeNode.nodeValue : null;
-	},
-
-	'type': function(){
-		return this.getAttribute('type');
 	},
 
 	'maxlength': function(){

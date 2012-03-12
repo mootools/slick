@@ -30,7 +30,10 @@ describe('Slick', function(){
 	itShouldFind(2, 'body a[tabindex]');
 	itShouldFind(2, 'body [tabindex="0"]');
 	itShouldFind(2, 'body [tabindex="1"]');
-	itShouldFind(4, 'body [tabindex]');
+	itShouldFind(5, 'body [tabindex]');
+
+	itShouldFind(2, 'body [maxlength="10"]');
+	itShouldFind(4, 'body [maxlength]');
 
 	describe('Combinators', function(){
 
