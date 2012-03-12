@@ -11,7 +11,6 @@ var specsSelectNthChild = function(context){
 
 	var shouldSelect = function(selector, items){
 		var result = context.SELECT(parent, selector);
-		console.log(selector, result);
 		expect(result.length).toEqual(items.length);
 		for (var i = 0; i < result.length; i++){
 			expect(result[i].firstChild.nodeValue).toEqual('' + items[i]);
