@@ -27,7 +27,7 @@ var specsMockTemplate = function(context){
 	it_should_find(1, 'body');
 	
 	// removes 'tel:' 'a' tags that are just grabbed by iphone
-	it_should_find(1814, 'body *:not([href^=tel:])');
+	it_should_find(1814, 'body *:not([href^="tel:"])');
 	
 	it_should_find(1, 'html');
 	it_should_find(1, 'body');
@@ -91,10 +91,11 @@ var specsMockTemplate = function(context){
 	});
 */
 	
-	it_should_find(6, '.a1 !  *');
-	it_should_find(4, '.a1 !> *');
-	it_should_find(2, '.a4 !+ *');
-	it_should_find(4, '.a4 !~ *');
+  // Remove custom selectors (jddalton)
+	// it_should_find(6, '.a1 !  *');
+	// it_should_find(4, '.a1 !> *');
+	// it_should_find(2, '.a4 !+ *');
+	// it_should_find(4, '.a4 !~ *');
 	
 	it_should_find(4, '.a4');
 	it_should_find(2, '.a4   .a4');
@@ -102,10 +103,10 @@ var specsMockTemplate = function(context){
 	it_should_find(0, '.a4 + .a4');
 	
 	
-	it_should_find(324  , 'body [class]:not([href^=tel:])');
-	it_should_find(13   , 'body [title]:not([href^=tel:])');
-	it_should_find(1490 , 'body :not([class]):not([href^=tel:])');
-	it_should_find(1801 , 'body :not([title]):not([href^=tel:])');
+	it_should_find(324  , 'body [class]:not([href^="tel:"])');
+	it_should_find(13   , 'body [title]:not([href^="tel:"])');
+	it_should_find(1490 , 'body :not([class]):not([href^="tel:"])');
+	it_should_find(1801 , 'body :not([title]):not([href^="tel:"])');
 	;
 	it_should_find(59  , 'body div');
 
@@ -256,8 +257,8 @@ var specsMockTemplate = function(context){
 	it_should_find(152, '~ p', div);
 
 	it_should_find(43  , 'div[class^=exa][class$=mple]');
-	it_should_find(12  , 'div p a:not([href^=tel:])');
-	it_should_find(683 , 'div,p,a:not([href^=tel:])');
+	it_should_find(12  , 'div p a:not([href^="tel:"])');
+	it_should_find(683 , 'div,p,a:not([href^="tel:"])');
 
 	it_should_find(43 , 'DIV.example');
 	it_should_find(43 , 'DiV.example');
@@ -297,7 +298,10 @@ var specsMockTemplate = function(context){
 	it_should_find(1  , ':root');
 	it_should_find(1  , 'html:root > head:first-child');
 	it_should_find(0  , 'body:root');
-	it_should_find(1  , 'a ! :root');
+	
+	// Remove custom selector (jddalton)
+	// it_should_find(1  , 'a ! :root');
+	
 	it_should_find(12 , ':root ul .tocline2');
 	it_should_find(0  , 'body :root');
 	
@@ -319,9 +323,10 @@ var specsMockTemplate = function(context){
 	// 	return count;
 	// })(),'h1[id]:contains("Selectors")');
 	
-	it_should_find(58,':contains(Selectors)');
-	it_should_find(58,":contains('Selectors')");
-	it_should_find(58,':contains("Selectors")');
+	// Remove custom selectors (jddalton)
+	// it_should_find(58,':contains(Selectors)');
+	// it_should_find(58,":contains('Selectors')");
+	// it_should_find(58,':contains("Selectors")');
 	
 	it_should_find(1,'[href][lang][class]');
 	// it_should_find((function(){
@@ -336,9 +341,10 @@ var specsMockTemplate = function(context){
 	it_should_find(43, '[class^=exa]');
 	it_should_find(44, '[class$=mple]');
 	
-	it_should_find(0  , '[class^=]');
-	it_should_find(0  , '[class$=]');
-	it_should_find(0  , '[class*=]');
+	// Remove invalid selectors (jddalton)
+	// it_should_find(0  , '[class^=]');
+	// it_should_find(0  , '[class$=]');
+	// it_should_find(0  , '[class*=]');
 	
 	it_should_find(0  , '[class^=""]');
 	it_should_find(0  , '[class$=""]');
