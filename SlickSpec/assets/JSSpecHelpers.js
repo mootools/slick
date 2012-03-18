@@ -3,12 +3,18 @@ String.escapeSingle = String.escapeSingle || function(string){
 };
 
 var isHTML = function(document){
-	var testNode = document.createElement('div'), isHTML = false;
+	var testNode = document.createElement('div'),
+		root = document.documentElement,
+		isHTML = false;
+
+	root.appendChild(testNode);
 	try {
 		var id = 'slick_getbyid_test';
 		testNode.innerHTML = '<a id="'+id+'"></a>';
 		isHTML = !!document.getElementById(id);
-	} catch(e){};
+	} catch(e){}
+	root.removeChild(testNode);
+
 	return isHTML;
 };
 
@@ -32,9 +38,9 @@ var $try = function(){
 };
 
 (function(){
-	
+
 	// moo browser object
-	
+
 	var ua = navigator.userAgent.toLowerCase(),
 		platform = navigator.platform.toLowerCase(),
 		UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
@@ -51,7 +57,7 @@ var $try = function(){
 	Browser[Browser.name] = true;
 	Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 	Browser.Platform[Browser.Platform.name] = true;
-	
+
 })();
 
 
@@ -87,7 +93,7 @@ var $try = function(){
 		haystack = arrayFrom(haystack);
 		return oldJasmineContains.call(this, haystack, needle);
 	};
-	
+
 })();
 
 
@@ -105,20 +111,20 @@ var $try = function(){
 		if (mockName && !testBuilder){
 			throw new Error("Invalid mockName, Mock syntax: `new Mock(/mockName/, function(specs, window){})`");
 		}
-	
+
 		if (Object.prototype.toString.call(mockName) != '[object RegExp]'){
 			mockName = new RegExp(mockName, 'i');
 		}
-	
+
 		this.mockName = mockName;
 		this.testBuilder = testBuilder;
 		Mock.mocks.push(this);
 	};
 
 	Mock.mocks = [];
-	
+
 	Mock.templateCounter = 0;
-	
+
 	Mock.prototype.run = function(){
 		var globalContextOld = global.context, self = this;
 		for (var mockName in global.mocks) {
@@ -150,7 +156,7 @@ var $try = function(){
 
 	Mock.Request = function(mockName, url){
 		if (!this instanceof Mock.Request) throw new Error('Mock.Request is not callable directly. Must use `new Mock.Request`');
-	
+
 		this.mockName = mockName;
 		this.url = url;
 		var self = this;
