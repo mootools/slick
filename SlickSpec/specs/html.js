@@ -56,6 +56,23 @@ describe('Slick', function(){
 			expect(context.SELECT1(context.document.getElementById('one'), 'non-existent-tag-name, +div')).not.toBeNull();
 		});
 
+		describe('Orphan context', function() {
+
+			beforeEach(function() {
+				this.context = context.document.createElement('div');
+				this.context.innerHTML = [
+					'<div id="children-orphan-context"></div>'
+				].join('');
+				this.firstChild = this.context.firstChild;
+			});
+
+			it('should find `#chidren-orphan-context`', function() {
+				expect(this.firstChild).not.toBeNull();
+				expect(this.firstChild.id).toEqual('children-orphan-context');
+				expect(context.SELECT1(this.context, '#children-orphan-context')).toEqual(this.firstChild);
+			});
+
+		});
 	});
 
 	describe('Contains', function(){
