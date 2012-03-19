@@ -52,6 +52,9 @@ describe('Slick', function(){
 		it('should find `+div`', function(){
 			expect(context.SELECT1(context.document.getElementById('one'), '+div')).not.toBeNull();
 		});
+		it('should find `non-existent-tag-name, +div`', function(){
+			expect(context.SELECT1(context.document.getElementById('one'), 'non-existent-tag-name, +div')).not.toBeNull();
+		});
 
 	});
 

@@ -250,7 +250,8 @@ local.setDocument = function(document){
 
 // Main Method
 
-var reSimpleSelector = /^([#.]?)((?:[\w-]+|\*))$/,
+var reSiblingContextSelector = /^\s*[+~]/,
+	reSimpleSelector = /^([#.]?)((?:[\w-]+|\*))$/,
 	reEmptyAttribute = /\[.+[*$^]=(?:""|'')?\]/,
 	qsaFailExpCache = {};
 
@@ -349,14 +350,19 @@ local.search = function(context, expression, append, first){
 				|| Slick.disableQSA
 			) break querySelector;
 
-			var _expression = expression, _context = context;
+			var _expression = expression,
+				_context = context;
+
 			if (!contextIsDocument){
+				if (reSiblingContextSelector.test(_expression)) {
+					context = _context.parentNode;
+				}
 				// non-document rooted QSA
 				// credits to Andrew Dupont
-				var currentId = _context.getAttribute('id'), slickid = 'slickid__';
+				var currentId = _context.getAttribute('id'),
+					slickid = 'slickid__';
 				_context.setAttribute('id', slickid);
 				_expression = '#' + slickid + ' ' + _expression;
-				context = _context.parentNode;
 			}
 
 			try {
