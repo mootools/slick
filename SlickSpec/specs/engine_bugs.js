@@ -295,7 +295,7 @@ var specsBrowserBugsFixed = function(context){
 
 		});
 
-		describe('SELECT #', function(){
+		xdescribe('SELECT #', function(){
 
 			beforeEach(setup);
 			afterEach(teardown);
