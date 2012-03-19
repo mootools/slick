@@ -451,7 +451,7 @@ var specsBrowserBugsFixed = function(context){
 				teardown();setup();
 
 				testNode.innerHTML = '<p></p><p></p>';
-				tmpNode1 = context.SELECT(testNode, 'p:nth-child(even)');
+				tmpNode1 = context.SELECT1(testNode, 'p:nth-child(even)');
 
 				expect(context.MATCH(tmpNode1, 'p:nth-child(even)')).toBeTruthy();
 			});
