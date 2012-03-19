@@ -101,6 +101,14 @@ local.setDocument = function(document){
 
 		features.brokenStarGEBTN = starSelectsComments || starSelectsClosed;
 
+		// native matchesSelector function
+		features.nativeMatchesSelector = root.matchesSelector || /*root.msMatchesSelector ||*/ root.mozMatchesSelector || root.webkitMatchesSelector;
+		if (features.nativeMatchesSelector) try {
+			// if matchesSelector trows errors on incorrect sintaxes we can use it
+			features.nativeMatchesSelector.call(root, ':slick');
+			features.nativeMatchesSelector = null;
+		} catch(e){}
+
 		// IE returns elements with the name instead of just id for getElementsById for some documents
 		try {
 			testNode.innerHTML = '<a name="'+ id +'"></a><b id="'+ id +'"></b>';
@@ -154,19 +162,18 @@ local.setDocument = function(document){
 
 		}
 
+		if (features.nativeMatchesSelector) {
+			// Webkit does not match correctly with the :nth-child pseudo on elements inside the body
+			// but if a style is applyed using this selector, the match starts working
+			try {
+				testNode.innerHTML = '_<style>:nth-child(2){}</style>';
+			} catch(e){}
+		}
+
 		// IE6-7, if a form has an input of id x, form.getAttribute(x) returns a reference to the input
 		try {
 			testNode.innerHTML = '<form action="s"><input id="action"/></form>';
 			brokenFormAttributeGetter = (testNode.firstChild.getAttribute('action') != 's');
-		} catch(e){}
-
-		// native matchesSelector function
-
-		features.nativeMatchesSelector = root.matchesSelector || /*root.msMatchesSelector ||*/ root.mozMatchesSelector || root.webkitMatchesSelector;
-		if (features.nativeMatchesSelector) try {
-			// if matchesSelector trows errors on incorrect sintaxes we can use it
-			features.nativeMatchesSelector.call(root, ':slick');
-			features.nativeMatchesSelector = null;
 		} catch(e){}
 
 	}
