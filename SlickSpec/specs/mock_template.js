@@ -1,5 +1,5 @@
 var specsMockTemplate = function(context){
-	
+
 	var makeSlickTestSearch = function(selector, count, disableQSA, subContext) {
 		return function(){
 			context.SELECTOR.disableQSA = !!disableQSA;
@@ -16,44 +16,44 @@ var specsMockTemplate = function(context){
 			delete context.SELECTOR.disableQSA;
 		};
 	};
-	
+
 	var it_should_find = function(count, selector, subContext){
 		if (global.document.querySelectorAll && !global.cannotDisableQSA)
 			it('should find '+count+' `'+selector+'` with    QSA', makeSlickTestSearch(selector, count, false, subContext));
 		it('should find '+count+' `'+selector + (!global.cannotDisableQSA ? '` without QSA' : ''), makeSlickTestSearch(selector, count, true, subContext));
 	};
-	
+
 	it_should_find(1, 'html');
 	it_should_find(1, 'body');
-	
+
 	// removes 'tel:' 'a' tags that are just grabbed by iphone
 	it_should_find(1814, 'body *:not([href^=tel:])');
-	
+
 	it_should_find(1, 'html');
 	it_should_find(1, 'body');
 	it_should_find(1, 'head');
 	it_should_find(59, 'div');
-	
+
 	it_should_find(43, '.example');
 	it_should_find(14, '.note');
 	it_should_find(5, '.fn');
-	
+
 	it_should_find(4, '.a1');
 	it_should_find(2, '.a1 .a1');
 	it_should_find(2, '.a1   .a1');
 	it_should_find(2, '.a1 > .a1');
 	it_should_find(0, '.a1 + .a1');
-	
+
 	it_should_find(12, '.a1   *');
 	it_should_find(3, '.a1 > *');
 	it_should_find(2, '.a1 + *');
 	it_should_find(6, '.a1 ~ *');
-	
+
 /*
 	it("should count '.a1 !  *'", function(){
-		
+
 		var result = {};
-		
+
 		var ancestors = [];
 		var ancestors_length = 0;
 		var things = context.SELECT(context.document,'.a1');
@@ -62,13 +62,13 @@ var specsMockTemplate = function(context){
 			dad = things[i];
 			while ((dad = dad.parentNode) && dad != context.document) ancestors.push(dad);
 		}
-		
-		// 
+
+		//
 		var dupes = [];
 		var uniques = [];
 		var results = ancestors;
 		var dupe = false;
-		
+
 		for (var i=0; i < results.length; i++) {
 			for (var u=0; u < uniques.length; u++) {
 				if (results[i] == uniques[u]){
@@ -76,32 +76,32 @@ var specsMockTemplate = function(context){
 					break;
 				}
 			}
-			
+
 			if (dupe)
 				dupes.push(results[i]);
 			else
 				uniques.push(results[i]);
-			
+
 			dupe = false;
 		}
-		
+
 		expect( uniques.length ).toEqual( 7 );
 		// expect( dupes.length ).toEqual( 0 );
-		// 
+		//
 	});
 */
-	
+
 	it_should_find(6, '.a1 !  *');
 	it_should_find(4, '.a1 !> *');
 	it_should_find(2, '.a4 !+ *');
 	it_should_find(4, '.a4 !~ *');
-	
+
 	it_should_find(4, '.a4');
 	it_should_find(2, '.a4   .a4');
 	it_should_find(2, '.a4 > .a4');
 	it_should_find(0, '.a4 + .a4');
-	
-	
+
+
 	it_should_find(324  , 'body [class]:not([href^=tel:])');
 	it_should_find(13   , 'body [title]:not([href^=tel:])');
 	it_should_find(1490 , 'body :not([class]):not([href^=tel:])');
@@ -112,14 +112,14 @@ var specsMockTemplate = function(context){
 /*
 	it('should not return duplicates for "* *"', function(){
 		context.SELECT.disableQSA = true;
-		
+
 		var dupes = [];
 		var uniques = [];
 		var results = context.SELECT(context.document,'* *');
 		var dupe = false;
-		
+
 		var dupe_uids = [];
-		
+
 		for (var i=0; i < results.length; i++) {
 			for (var u=0; u < uniques.length; u++) {
 				if (results[i] == uniques[u]){
@@ -127,17 +127,17 @@ var specsMockTemplate = function(context){
 					break;
 				}
 			}
-			
+
 			if (dupe) {
 				dupes.push(results[i]);
 			}
 			else
 				uniques.push(results[i]);
-			
+
 			dupe = false;
 		}
 		expect( dupes.length ).toEqual( 0 );
-		
+
 		context.SELECT.disableQSA = false;
 	});
 	it('should not return duplicates for "* *[class]"', function(){
@@ -148,9 +148,9 @@ var specsMockTemplate = function(context){
 		var uniques = [];
 		var results = context.SELECT(context.document,'* *[class]');
 		var dupe = false;
-		
+
 		var dupe_uids = [];
-		
+
 		for (var i=0; i < results.length; i++) {
 			for (var u=0; u < uniques.length; u++) {
 				if (results[i] == uniques[u]){
@@ -158,24 +158,24 @@ var specsMockTemplate = function(context){
 					break;
 				}
 			}
-			
+
 			if (dupe) {
 				dupes.push(results[i]);
 			}
 			else
 				uniques.push(results[i]);
-			
+
 			dupe = false;
 		}
 		// expect( dupes.length ).toEqual( 0 );
 		// window['should not return duplicates for "* *[class]"'] = false;
 		// console.log('/should not return duplicates for "* *[class]"');
-		
+
 		context.SELECT.disableQSA = false;
 	});
 	it('should not return duplicates for "* *" manually', function(){
 		context.SELECT.disableQSA = true;
-		
+
 		var dupes = [];
 		var uniques = [];
 		var results0 = context.document.getElementsByTagName('*');
@@ -184,9 +184,9 @@ var specsMockTemplate = function(context){
 			results.concat( Array.prototype.slice.call(results0[i].getElementsByTagName('*')) );
 		}
 		var dupe = false;
-		
+
 		var dupe_uids = [];
-		
+
 		for (var i=0; i < results.length; i++) {
 			for (var u=0; u < uniques.length; u++) {
 				if (results[i] == uniques[u]){
@@ -194,29 +194,29 @@ var specsMockTemplate = function(context){
 					break;
 				}
 			}
-			
+
 			if (dupe) {
 				dupes.push(results[i]);
 			}
 			else
 				uniques.push(results[i]);
-			
+
 			dupe = false;
 		}
 		value_of( dupes.length ).should_be( 0 );
-		
+
 		context.SELECT.disableQSA = false;
 	});
 */
 
 	it('should not return duplicates for "div p"', function(){
 		context.SELECT.disableQSA = true;
-		
+
 		var dupes = [];
 		var uniques = [];
 		var results = context.SELECT(context.document,'div p');
 		var dupe = false;
-		
+
 		for (var i=0; i < results.length; i++) {
 			for (var u=0; u < uniques.length; u++) {
 				if (results[i] == uniques[u]){
@@ -224,18 +224,18 @@ var specsMockTemplate = function(context){
 					break;
 				}
 			}
-			
+
 			if (dupe)
 				dupes.push(results[i]);
 			else
 				uniques.push(results[i]);
-			
+
 			dupe = false;
 		}
-		
+
 		expect( dupes.length ).toEqual( 0 );
 		expect( uniques.length ).toEqual( 140 );
-		
+
 		context.SELECT.disableQSA = false;
 	});
 	it_should_find(140 , 'div p');
@@ -272,7 +272,7 @@ var specsMockTemplate = function(context){
 	it_should_find(12 , 'ul.toc li.tocline2');
 	it_should_find(12 , 'ul.toc > li.tocline2');
 	it_should_find(0  , 'h1#title + div > p');
-	
+
 	// it_should_find((function(){
 	// 	var count = 0;
 	// 	var elements = template.getElementsByTagName('h1');
@@ -282,7 +282,7 @@ var specsMockTemplate = function(context){
 	// 	}
 	// 	return count;
 	// })(), 'h1[id]:contains(Selectors)');
-	
+
 	// pseudos
 	it_should_find(16,  'div:not(.example)');
 	it_should_find(158, 'p:nth-child(even)');
@@ -293,22 +293,22 @@ var specsMockTemplate = function(context){
 	it_should_find(3,   'p:only-child');
 	it_should_find(19,  'p:last-child');
 	it_should_find(54,  'p:first-child');
-	
+
 	it_should_find(1  , ':root');
 	it_should_find(1  , 'html:root > head:first-child');
 	it_should_find(0  , 'body:root');
 	it_should_find(1  , 'a ! :root');
 	it_should_find(12 , ':root ul .tocline2');
 	it_should_find(0  , 'body :root');
-	
+
 	// specs['":contains()" elements should actually contain the word'] = function(){
 	// 	var els = context.SELECT(context.document,':contains(selectors)');
 	// 	for (var i=0,el; el=els[i]; i++) value_of( el.innerHTML ).should_match( 'selectors' );
-	// 	
+	//
 	// 	els = context.SELECT(context.document,':contains(Selectors)');
 	// 	for (i=0; el=els[i]; i++) value_of( el.innerHTML ).should_match( 'Selectors' );
 	// };
-	// 
+	//
 	// it_should_find((function(){
 	// 	var count = 0;
 	// 	var elements = template.getElementsByTagName('h1');
@@ -318,11 +318,11 @@ var specsMockTemplate = function(context){
 	// 	}
 	// 	return count;
 	// })(),'h1[id]:contains("Selectors")');
-	
+
 	it_should_find(58,':contains(Selectors)');
 	it_should_find(58,":contains('Selectors')");
 	it_should_find(58,':contains("Selectors")');
-	
+
 	it_should_find(1,'[href][lang][class]');
 	// it_should_find((function(){
 	// 	var count = 0;
@@ -335,15 +335,15 @@ var specsMockTemplate = function(context){
 	it_should_find(43, '[class=example]');
 	it_should_find(43, '[class^=exa]');
 	it_should_find(44, '[class$=mple]');
-	
+
 	it_should_find(0  , '[class^=]');
 	it_should_find(0  , '[class$=]');
 	it_should_find(0  , '[class*=]');
-	
+
 	it_should_find(0  , '[class^=""]');
 	it_should_find(0  , '[class$=""]');
 	it_should_find(0  , '[class*=""]');
-	
+
 	// it_should_find((function(){
 	// 	var count = 0;
 	// 	var elements = template.getElementsByTagName('*');
@@ -352,9 +352,9 @@ var specsMockTemplate = function(context){
 	// 	}
 	// 	return count;
 	// })(),'[class*=e]');
-	
+
 	it_should_find(1,'[lang|=tr]');
 	it_should_find(324,'[class][class!=made_up]');
 	it_should_find(43,'[class~=example]');
-	
+
 };
