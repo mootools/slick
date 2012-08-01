@@ -93,11 +93,14 @@ local.setDocument = function(document){
 		starSelectsComments = (testNode.getElementsByTagName('*').length > 1);
 
 		// IE returns closed nodes (EG:"</foo>") for getElementsByTagName('*') for some documents
-		try {
-			testNode.innerHTML = 'foo</foo>';
-			selected = testNode.getElementsByTagName('*');
-			starSelectsClosed = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
-		} catch(e){}
+		// Should never inject incorrect markup on XML documents
+		if (!features.isXMLDocument){
+			try {
+				testNode.innerHTML = 'foo</foo>';
+				selected = testNode.getElementsByTagName('*');
+				starSelectsClosed = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
+			} catch(e){}
+		}
 
 		features.brokenStarGEBTN = starSelectsComments || starSelectsClosed;
 
@@ -136,11 +139,14 @@ local.setDocument = function(document){
 
 		if (testNode.querySelectorAll){
 			// IE 8 returns closed nodes (EG:"</foo>") for querySelectorAll('*') for some documents
-			try {
-				testNode.innerHTML = 'foo</foo>';
-				selected = testNode.querySelectorAll('*');
-				features.starSelectsClosedQSA = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
-			} catch(e){}
+			// Should never inject incorrect markup on XML documents
+			if (!features.isXMLDocument){
+				try {
+					testNode.innerHTML = 'foo</foo>';
+					selected = testNode.querySelectorAll('*');
+					features.starSelectsClosedQSA = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
+				} catch(e){}
+			}
 
 			// Safari 3.2 querySelectorAll doesnt work with mixedcase on quirksmode
 			try {
