@@ -5,6 +5,7 @@ description: Standalone CSS3 Selector parser
 provides: Slick.Parser
 ...
 */
+/*! Slick | mootools.net | license: https://github.com/mootools/slick/blob/master/LICENSE.txt */
 
 ;(function(){
 
