@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv=Content-type content="text/html; charset=utf-8">
+    <title>example</title>
+</head>
+<body>
+<script src="../node_modules/requirejs/require.js"></script>
+
+<script>
+require.config({
+    baseUrl: './'
+});
+// if (!(/debug/i).test(location.search)) {
+//     require.config({paths:{'../lib/attr':'../build/attr.built'}});
+// }
+</script>
+<!--[if lte IE 7]><script>require.config({paths:{'../lib/attr':'../build/attr.built.oldie'}})</script><![endif]-->
+
+<script>
+require(['../lib/attr']);
+</script>
+</body>
+</html>
