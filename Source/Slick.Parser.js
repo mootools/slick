@@ -69,7 +69,7 @@ var escapeRegExp = (function(){
 	return function(string){ return string.replace(from, to) }
 }())
 
-var regexp = new RegExp(
+var regexp = RegExp(
 /*
 #!/usr/bin/env ruby
 puts "\t\t" + DATA.read.gsub(/\(\?x\)|\s+#.*$|\s+|\\$|\\n/,'')
@@ -216,7 +216,14 @@ function parser(
 	return '';
 };
 
-// Slick NS
+// AMD
+
+if (typeof define == 'function' && define.amd){
+	define(function(){return parse});
+	return;
+}
+
+// exports
 
 var Slick = (this.Slick || {});
 
@@ -228,4 +235,4 @@ Slick.escapeRegExp = escapeRegExp;
 
 if (!this.Slick) this.Slick = Slick;
 
-}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);
+}).apply(/*<CommonJS>*/(typeof exports == 'object') ? exports : /*</CommonJS>*/this);
